@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Break-even Calculator - Tassen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem;
+      font-size: 1rem;
+    }
+    #result {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Break-even Calculator - Tassen</h1>
+
+  <label>Verkoopprijs per tas (€):
+    <input type="number" id="price" value="270">
+  </label>
+
+  <label>Marge (%):
+    <input type="number" id="margin" value="30">
+  </label>
+
+  <label>Amazon fee (%):
+    <input type="number" id="amazon" value="13">
+  </label>
+
+  <label>Verzendkosten per tas (€):
+    <input type="number" id="shipping" value="12">
+  </label>
+
+  <label>Agency fee per maand (€):
+    <input type="number" id="agency" value="800">
+  </label>
+
+  <label>Ad spend per maand (€):
+    <input type="number" id="adspend" value="1000">
+  </label>
+
+  <button onclick="calculateBreakEven()">Bereken break-even punt</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateBreakEven() {
+      const price = parseFloat(document.getElementById('price').value);
+      const marginPercent = parseFloat(document.getElementById('margin').value);
+      const amazonPercent = parseFloat(document.getElementById('amazon').value);
+      const shipping = parseFloat(document.getElementById('shipping').value);
+      const agency = parseFloat(document.getElementById('agency').value);
+      const adspend = parseFloat(document.getElementById('adspend').value);
+
+      const marginEur = price * (marginPercent / 100);
+      const amazonFee = price * (amazonPercent / 100);
+      const netProfit = marginEur - amazonFee - shipping;
+
+      const totalFixedCosts = agency + adspend;
+      const breakEvenUnits = Math.ceil(totalFixedCosts / netProfit);
+
+      const resultText = isFinite(breakEvenUnits) && breakEvenUnits > 0
+        ? `Je moet gemiddeld ${breakEvenUnits} tassen per maand verkopen om break-even te draaien.`
+        : 'Kan geen geldig break-even punt berekenen met deze waardes.';
+
+      document.getElementById('result').innerText = resultText;
+    }
+  </script>
+</body>
+</html>
